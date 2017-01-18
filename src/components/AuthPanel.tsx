@@ -12,14 +12,19 @@ interface AuthState
     token?: AccessToken;
     loading?: boolean
 }
-export class AuthenticatePanel extends React.Component<undefined, AuthState>
+
+interface AuthProps {
+    onToken: (token: AccessToken) => void;
+}
+
+export class AuthenticatePanel extends React.Component<AuthProps, AuthState>
 {
     constructor()
     {
         super();
         this.state = {
-            username: '',
-            password: '',
+            username: window.localStorage.getItem("api-usr"),
+            password: window.localStorage.getItem("api-pwd"),
             loading: false
         };
 
@@ -28,10 +33,17 @@ export class AuthenticatePanel extends React.Component<undefined, AuthState>
         this.onPasswordChanged = this.onPasswordChanged.bind(this)
     }
 
+    componentWillMount() {
+        if (!isNullOrEmpty(this.state.username) && !isNullOrEmpty(this.state.password)) {
+          this.authenticate(null);
+        }
+    }
+
 
     private async authenticate(evt: any)
     {
-        evt.preventDefault();
+        if (evt != null)
+            evt.preventDefault();
         this.setState({
                           token: "",
                           loading: true
@@ -41,19 +53,22 @@ export class AuthenticatePanel extends React.Component<undefined, AuthState>
         this.setState({
                           token: result,
                           loading: false
-                      })
+                      });
+        window.localStorage.setItem("api-usr", this.state.username);
+        window.localStorage.setItem("api-pwd", this.state.password);
+        this.props.onToken(result);
     }
 
-    private onUsernameChanged(evt: any, value: any)
+    private onUsernameChanged(event: any)
     {
-        console.log("Username changed from " + evt + " new value " + value.value)
-        this.setState({username: value.value})
+        // console.log("Username changed from new event " + event.target.value)
+        this.setState({username: event.target.value})
     }
 
-    private onPasswordChanged(evt: any, value: any)
+    private onPasswordChanged(event: any)
     {
-        console.log("Password changed from " + evt + " new value " + value.value)
-        this.setState({password: value.value})
+        // console.log("Password changed from new value " + event.target.value)
+        this.setState({password: event.target.value})
     }
 
     render()
