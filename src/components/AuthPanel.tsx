@@ -1,6 +1,6 @@
 ///
 import * as React from "react";
-import {Button, Form, Message} from "semantic-ui-react";
+import {Button, Form, Message, Input, Container} from "semantic-ui-react";
 import {AccessToken, fetchAccessToken, isNullOrEmpty} from "./Api";
 // import FormEvent = React.FormEvent;
 // import * as api from "./Api"
@@ -13,7 +13,8 @@ interface AuthState
     loading?: boolean
 }
 
-interface AuthProps {
+interface AuthProps
+{
     onToken: (token: AccessToken) => void;
 }
 
@@ -33,9 +34,10 @@ export class AuthenticatePanel extends React.Component<AuthProps, AuthState>
         this.onPasswordChanged = this.onPasswordChanged.bind(this)
     }
 
-    componentWillMount() {
+    componentWillMount()
+    {
         if (!isNullOrEmpty(this.state.username) && !isNullOrEmpty(this.state.password)) {
-          this.authenticate(null);
+            this.authenticate(null);
         }
     }
 
@@ -78,39 +80,50 @@ export class AuthenticatePanel extends React.Component<AuthProps, AuthState>
         if (token != null) {
             if (token.access_token != null) {
                 tokenNode = <Message success
-                                     header='Authentication succeeded'
-                                     content={token.access_token}/>
+                                     attached
+                                     header="Authentication succeeded"/>
             } else if (token.error != null) {
                 tokenNode = <Message error
-                                     header={token.error}
-                                     content={token.error_description} />
+                                     attached
+                                     header="Sign in failed"/>
             }
+        } else {
+            tokenNode = <Message attached
+                                 header="Please sign in"/>
         }
         let disabled: boolean = isNullOrEmpty(this.state.username) || isNullOrEmpty(this.state.password);
 
-        return <div>
-            <Form>
-                <Form.Group >
-                    <Form.Input label='Username'
-                                placeholder='username'
-                                value={this.state.username}
-                                onChange={this.onUsernameChanged}/>
-                    <Form.Input label='Password'
-                                type="password"
-                                placeholder='password'
-                                value={this.state.password}
-                                onChange={this.onPasswordChanged}/>
-                </Form.Group>
-                <Button primary
-                        loading={this.state.loading}
-                        size="medium"
-                        disabled={disabled}
-                        onClick={this.authenticate}>
-                    Authenticate
-                </Button>
-            </Form>
-
+        return <Container fluid>
             {tokenNode}
-        </div>
+            <Form className="attached fluid segment">
+                <Form.Group>
+                    <Form.Field inline>
+                        <label>Username</label>
+                        <Input placeholder='username'
+                               value={this.state.username}
+                               onChange={this.onUsernameChanged}/>
+                    </Form.Field>
+
+                    <Form.Field inline>
+                        <label>Password</label>
+                        <Input placeholder='password'
+                               type='password'
+                               value={this.state.password}
+                               onChange={this.onPasswordChanged}/>
+                    </Form.Field>
+
+                    <Button primary
+                            loading={this.state.loading}
+                            size="medium"
+                            disabled={disabled}
+                            onClick={this.authenticate}>
+                        Authenticate
+                    </Button>
+                  
+                </Form.Group>
+            </Form>
+            {/*{tokenNode}*/}
+
+        </Container>
     }
 }

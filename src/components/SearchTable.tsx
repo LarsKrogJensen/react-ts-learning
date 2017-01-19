@@ -1,5 +1,5 @@
 import * as React from "react";
-import {Table, Input, Button} from "semantic-ui-react";
+import {Table, Input, Button, Container} from "semantic-ui-react";
 import {SearchItem, search} from "./Api";
 
 export interface SearchTableProps
@@ -46,7 +46,7 @@ export class SearchTable extends React.Component<SearchTableProps, SearchTableSt
                                                 <Table.Cell>{item.longName}</Table.Cell>
                                             </Table.Row>
                                         });
-        return <div>
+        return <Container fluid>
             <Input placeholder='First name'
                    value={this.state.searchText}/>
             <Button primary
@@ -67,6 +67,6 @@ export class SearchTable extends React.Component<SearchTableProps, SearchTableSt
                     {rows}
                 </Table.Body>
             </Table>
-        </div>
+        </Container>
     }
 }
