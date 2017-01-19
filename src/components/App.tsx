@@ -4,13 +4,9 @@ import {AuthenticatePanel} from "./AuthPanel";
 import {AccessToken, isNullOrEmpty} from "./Api";
 import {SearchTable} from "./SearchTable";
 import {Grid} from "semantic-ui-react";
-// import {ModalDemo} from "./ModalDemo";
-// import GraphiQL from 'graphiql';
 
-export interface HelloProps
+export interface AppProps
 {
-    compiler: string,
-    framework: string
 }
 
 interface HelloState
@@ -18,7 +14,7 @@ interface HelloState
     token?: AccessToken;
 }
 
-export class Hello extends React.Component<HelloProps, HelloState>
+export class App extends React.Component<AppProps, HelloState>
 {
     constructor()
     {
@@ -40,13 +36,15 @@ export class Hello extends React.Component<HelloProps, HelloState>
             searchTable = <SearchTable token={this.state.token.access_token}/>
         }
 
-        return <Grid columns={1} padded>
-            <Grid.Row>
-                <AuthenticatePanel onToken={this.onTokenChanged}/>
-            </Grid.Row>
-            <Grid.Row>
-                {searchTable}
-            </Grid.Row>
-        </Grid>
+        return <div>
+            <Grid columns={1} padded>
+                <Grid.Row>
+                    <AuthenticatePanel onToken={this.onTokenChanged}/>
+                </Grid.Row>
+                <Grid.Row>
+                    {searchTable}
+                </Grid.Row>
+            </Grid>
+        </div>
     }
 }

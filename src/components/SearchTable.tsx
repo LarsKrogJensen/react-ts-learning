@@ -89,7 +89,7 @@ export class SearchTable extends React.Component<SearchTableProps, SearchTableSt
             <Table singleLine size="small">
                 <Table.Header>
                     <Table.Row>
-                        <Table.HeaderCell>Id</Table.HeaderCell>
+                        <Table.HeaderCell>ID</Table.HeaderCell>
                         <Table.HeaderCell>Name</Table.HeaderCell>
                         <Table.HeaderCell>Longname</Table.HeaderCell>
                     </Table.Row>
