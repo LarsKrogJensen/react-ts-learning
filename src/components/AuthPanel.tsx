@@ -1,6 +1,6 @@
 ///
 import * as React from "react";
-import {Button, Form, Message, Input, Container} from "semantic-ui-react";
+import {Button, Form, Message, Input} from "semantic-ui-react";
 import {AccessToken, fetchAccessToken, isNullOrEmpty} from "./Api";
 // import FormEvent = React.FormEvent;
 // import * as api from "./Api"
@@ -47,7 +47,7 @@ export class AuthenticatePanel extends React.Component<AuthProps, AuthState>
         if (evt != null)
             evt.preventDefault();
         this.setState({
-                          token: "",
+                          token: null,
                           loading: true
                       });
         let result: AccessToken = await fetchAccessToken(this.state.username, this.state.password);
@@ -93,7 +93,7 @@ export class AuthenticatePanel extends React.Component<AuthProps, AuthState>
         }
         let disabled: boolean = isNullOrEmpty(this.state.username) || isNullOrEmpty(this.state.password);
 
-        return <Container fluid>
+        return <div>
             {tokenNode}
             <Form className="attached fluid segment">
                 <Form.Group>
@@ -124,6 +124,6 @@ export class AuthenticatePanel extends React.Component<AuthProps, AuthState>
             </Form>
             {/*{tokenNode}*/}
 
-        </Container>
+        </div>
     }
 }

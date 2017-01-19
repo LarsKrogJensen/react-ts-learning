@@ -20,6 +20,8 @@ export function isNullOrEmpty(val: string): boolean
     return val == null || val == undefined || val == ""
 }
 
+// const baseUrL: string = "https://larskj-gql.herokuapp.com";
+const baseUrL: string = "http://localhost:8080";
 
 export async function fetchAccessToken(usr: string, pwd: string): Promise<AccessToken>
 {
@@ -35,7 +37,7 @@ export async function fetchAccessToken(usr: string, pwd: string): Promise<Access
                              }),
         credentials: 'include',
     };
-    let response: Response = await fetch("https://larskj-gql.herokuapp.com/authenticate", init)
+    let response: Response = await fetch(baseUrL + "/authenticate", init)
     return await response.json()
 }
 
@@ -43,9 +45,9 @@ export async function search(token: string, searchQuery: string): Promise<Search
 {
     console.log("searching by: " + searchQuery)
     let query = JSON.stringify({
-                                   query: "{ listingSearch(searchQuery: \"abb\") {id name longName}} }"
+                                   query: "{ listingSearch(searchQuery: \"" + searchQuery + "\") {id name longName}} }"
                                });
-    console.log("Query: " + query)
+    console.log("Query: " + query);
     let init: RequestInit = {
         method: 'POST',
         headers: {
@@ -56,7 +58,7 @@ export async function search(token: string, searchQuery: string): Promise<Search
         body: query,
         credentials: 'include',
     };
-    let response: Response = await fetch("https://larskj-gql.herokuapp.com/graphql", init)
+    let response: Response = await fetch(baseUrL + "/graphql", init)
     let jsonObj = await response.json();
     return jsonObj.data.listingSearch;
 }

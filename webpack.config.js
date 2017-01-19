@@ -3,7 +3,7 @@ var path = require("path");
 
 module.exports = {
     entry: [
-        "webpack-dev-server/client?http://localhost:8080/",
+        "webpack-dev-server/client?http://localhost:3000/",
         "webpack/hot/dev-server",
         "./src/index.tsx"
     ],
@@ -15,6 +15,11 @@ module.exports = {
 
     // Enable sourcemaps for debugging webpack's output.
     devtool: "source-map",
+
+    devServer: {
+        inline: true,
+        port: 3000
+    },
 
     resolve: {
         // Add '.ts' and '.tsx' as resolvable extensions.
