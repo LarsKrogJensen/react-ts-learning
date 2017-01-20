@@ -1,8 +1,10 @@
 import * as React from "react";
-import {Table, Input, Container} from "semantic-ui-react";
+import {Input, Container} from "semantic-ui-react";
 import {SearchItem, isNullOrEmpty, search} from "./Api";
 import * as lodash from "lodash";
 import Cancelable = _.Cancelable;
+import * as ReactDataGrid from "react-data-grid"
+// import ReactDataGrid = AdazzleReactDataGrid.ReactDataGrid;
 
 
 export interface SearchTableProps
@@ -34,6 +36,7 @@ export class SearchTable extends React.Component<SearchTableProps, SearchTableSt
 
         this.onSearchClick = this.onSearchClick.bind(this);
         this.onSearchTextChanged = this.onSearchTextChanged.bind(this)
+        this.getRowAt = this.getRowAt.bind(this)
     }
 
     private async onSearchClick(evt: any)
@@ -68,36 +71,61 @@ export class SearchTable extends React.Component<SearchTableProps, SearchTableSt
         })
     }
 
+    private getRowAt(index: number)
+    {
+        if (index < 0 || index > this.state.table.length) {
+            return undefined;
+        }
+        return this.state.table[index];
+    }
 
     render()
     {
         let state = this.state;
-        let rows = state.table.map((item: SearchItem) =>
-                                   {
-                                       return <Table.Row key={item.id}>
-                                           <Table.Cell>{item.id}</Table.Cell>
-                                           <Table.Cell>{item.name}</Table.Cell>
-                                           <Table.Cell>{item.longName}</Table.Cell>
-                                       </Table.Row>
-                                   });
-        return <Container fluid>
+        // let rows = state.table.map((item: SearchItem) =>
+        //                            {
+        //                                return <Table.Row key={item.id}>
+        //                                    <Table.Cell>{item.id}</Table.Cell>
+        //                                    <Table.Cell>{item.name}</Table.Cell>
+        //                                    <Table.Cell>{item.longName}</Table.Cell>
+        //                                </Table.Row>
+        //                            });
+
+        let columns: ReactDataGrid.Column[] = [
+            {
+                key: 'id',
+                name: 'ID',
+                width: 80,
+                resizable: true
+            },
+            {
+                key: 'name',
+                name: 'Name',
+            },
+            {
+                key: 'longName',
+                name: 'Long Name'
+            }
+
+        ];
+
+        // let rowGetter = () => {
+        //     return this.state.table;
+        // };
+        return <Container fluid className="fullheight">
             <Input placeholder='Search'
                    value={state.searchText}
                    onChange={this.onSearchTextChanged}/>
 
-            <Table singleLine size="small">
-                <Table.Header>
-                    <Table.Row>
-                        <Table.HeaderCell>ID</Table.HeaderCell>
-                        <Table.HeaderCell>Name</Table.HeaderCell>
-                        <Table.HeaderCell>Longname</Table.HeaderCell>
-                    </Table.Row>
-                </Table.Header>
 
-                <Table.Body>
-                    {rows}
-                </Table.Body>
-            </Table>
+            <ReactDataGrid columns={columns}
+                           ref="grid"
+                           enableCellSelect={false}
+                           enableRowSelect={false}
+                           rowsCount={this.state.table.length}
+                           rowGetter={this.getRowAt}>
+
+            </ReactDataGrid>
         </Container>
     }
 }

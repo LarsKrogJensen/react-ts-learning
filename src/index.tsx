@@ -1,6 +1,7 @@
 import * as React from "react"
 import * as ReactDOM from "react-dom"
 import './index.css';
+import './react-data-grid.css';
 
 import { App } from "./components/App"
 
