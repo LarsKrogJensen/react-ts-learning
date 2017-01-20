@@ -12,6 +12,7 @@
   "author": "Lars",
   "license": "MIT",
   "devDependencies": {
+    "@types/core-js": "^0.9.35",
     "@types/jest": "^16.0.1",
     "@types/lodash": "^4.14.50",
     "@types/react": "^15.0.0",
@@ -32,6 +33,7 @@
     "webpack-dev-server": "^2.1.0-beta.12"
   },
   "dependencies": {
+    "es6-promise": "^4.0.5",
     "lodash": "^4.17.4",
     "react": "^15.4.1",
     "react-dom": "^15.4.1",

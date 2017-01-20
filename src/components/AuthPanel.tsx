@@ -24,8 +24,8 @@ export class AuthenticatePanel extends React.Component<AuthProps, AuthState>
     {
         super();
         this.state = {
-            username: window.localStorage.getItem("api-usr"),
-            password: window.localStorage.getItem("api-pwd"),
+            username: window.localStorage.getItem("api-usr") || '',
+            password: window.localStorage.getItem("api-pwd") || '',
             loading: false
         };
 
@@ -41,7 +41,6 @@ export class AuthenticatePanel extends React.Component<AuthProps, AuthState>
         }
     }
 
-
     private async authenticate(evt: any)
     {
         if (evt != null)
@@ -51,7 +50,7 @@ export class AuthenticatePanel extends React.Component<AuthProps, AuthState>
                           loading: true
                       });
         let result: AccessToken = await fetchAccessToken(this.state.username, this.state.password);
-        console.log("Result: " + result.access_token);
+        
         this.setState({
                           token: result,
                           loading: false
