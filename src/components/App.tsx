@@ -35,15 +35,18 @@ export class App extends React.Component<AppProps, HelloState>
             searchTable = <SearchTable token={this.state.token.access_token}/>
         }
 
-        return <div>
-            <Grid columns={1} padded>
-                <Grid.Row>
-                    <AuthenticatePanel onToken={this.onTokenChanged}/>
+        return <Grid columns={1} stretched>
+                <Grid.Row stretched={true}>
+                    <Grid.Column>
+                        <AuthenticatePanel onToken={this.onTokenChanged}/>
+                    </Grid.Column>
                 </Grid.Row>
-                <Grid.Row>
+                <Grid.Row stretched={true}>
+                    <Grid.Column stretched={true}>
                     {searchTable}
+                    </Grid.Column>
                 </Grid.Row>
             </Grid>
-        </div>
+
     }
 }
