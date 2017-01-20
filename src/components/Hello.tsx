@@ -36,7 +36,6 @@ export class Hello extends React.Component<HelloProps, HelloState>
     {
         let searchTable;
         if (this.state.token != null && !isNullOrEmpty(this.state.token.access_token)) {
-
             searchTable = <SearchTable token={this.state.token.access_token}/>
         }
 

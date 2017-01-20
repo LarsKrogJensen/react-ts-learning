@@ -46,7 +46,7 @@ export class SearchTable extends React.Component<SearchTableProps, SearchTableSt
 
     private async doSearch(searchText: string)
     {
-        let searchResults :SearchItem[] =  await search(this.props.token, searchText)
+        let searchResults: SearchItem[] = await search(this.props.token, searchText)
         this.setState({table: searchResults})
     }
 
@@ -65,8 +65,7 @@ export class SearchTable extends React.Component<SearchTableProps, SearchTableSt
         this.setState({searchText: evt.target.value}, () =>
         {
             this.performSearch();
-        });
-
+        })
     }
 
 
@@ -74,13 +73,13 @@ export class SearchTable extends React.Component<SearchTableProps, SearchTableSt
     {
         let state = this.state;
         let rows = state.table.map((item: SearchItem) =>
-                                        {
-                                            return <Table.Row key={item.id}>
-                                                <Table.Cell>{item.id}</Table.Cell>
-                                                <Table.Cell>{item.name}</Table.Cell>
-                                                <Table.Cell>{item.longName}</Table.Cell>
-                                            </Table.Row>
-                                        });
+                                   {
+                                       return <Table.Row key={item.id}>
+                                           <Table.Cell>{item.id}</Table.Cell>
+                                           <Table.Cell>{item.name}</Table.Cell>
+                                           <Table.Cell>{item.longName}</Table.Cell>
+                                       </Table.Row>
+                                   });
         return <Container fluid>
             <Input placeholder='Search'
                    value={state.searchText}
