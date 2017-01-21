@@ -1,9 +1,9 @@
-///
 import * as React from "react";
 import {Button, Form, Message, Input} from "semantic-ui-react";
-import {AccessToken, fetchAccessToken, isNullOrEmpty} from "./Api";
-// import FormEvent = React.FormEvent;
-// import * as api from "./Api"
+import {util} from "../util/util";
+import {api} from "../util/api";
+import AccessToken = api.AccessToken;
+import isNullOrEmpty = util.isNullOrEmpty;
 
 interface AuthState
 {
@@ -20,9 +20,9 @@ interface AuthProps
 
 export class AuthenticatePanel extends React.Component<AuthProps, AuthState>
 {
-    constructor()
+    constructor(props: AuthProps, context: any)
     {
-        super();
+        super(props, context);
         this.state = {
             username: window.localStorage.getItem("api-usr") || '',
             password: window.localStorage.getItem("api-pwd") || '',
@@ -30,13 +30,13 @@ export class AuthenticatePanel extends React.Component<AuthProps, AuthState>
         };
 
         this.authenticate = this.authenticate.bind(this);
-        this.onUsernameChanged = this.onUsernameChanged.bind(this)
-        this.onPasswordChanged = this.onPasswordChanged.bind(this)
+        this.onUsernameChanged = this.onUsernameChanged.bind(this);
+        this.onPasswordChanged = this.onPasswordChanged.bind(this);
     }
 
     componentWillMount()
     {
-        if (!isNullOrEmpty(this.state.username) && !isNullOrEmpty(this.state.password)) {
+        if (!util.isNullOrEmpty(this.state.username) && !util.isNullOrEmpty(this.state.password)) {
             this.authenticate(null);
         }
     }
@@ -49,26 +49,34 @@ export class AuthenticatePanel extends React.Component<AuthProps, AuthState>
                           token: null,
                           loading: true
                       });
-        let result: AccessToken = await fetchAccessToken(this.state.username, this.state.password);
-        
-        this.setState({
-                          token: result,
-                          loading: false
-                      });
-        window.localStorage.setItem("api-usr", this.state.username);
-        window.localStorage.setItem("api-pwd", this.state.password);
-        this.props.onToken(result);
+        try {
+            let result: AccessToken = await api.fetchAccessToken(this.state.username, this.state.password);
+
+            this.setState({
+                              token: result,
+                              loading: false
+                          });
+            window.localStorage.setItem("api-usr", this.state.username);
+            window.localStorage.setItem("api-pwd", this.state.password);
+            this.props.onToken(result);
+        } catch (e) {
+            this.setState({
+                              token: {
+                                  error: "Authentication failed",
+                                  error_description: e.message
+                              },
+                              loading: false
+                          });
+        }
     }
 
     private onUsernameChanged(event: any)
     {
-        // console.log("Username changed from new event " + event.target.value)
         this.setState({username: event.target.value})
     }
 
     private onPasswordChanged(event: any)
     {
-        // console.log("Password changed from new value " + event.target.value)
         this.setState({password: event.target.value})
     }
 
@@ -118,7 +126,7 @@ export class AuthenticatePanel extends React.Component<AuthProps, AuthState>
                             onClick={this.authenticate}>
                         Authenticate
                     </Button>
-                  
+
                 </Form.Group>
             </Form>
             {/*{tokenNode}*/}
